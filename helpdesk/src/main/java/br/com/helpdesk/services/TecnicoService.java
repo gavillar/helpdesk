@@ -6,6 +6,8 @@ import br.com.helpdesk.repositories.TenicoRepository;
 import br.com.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,4 +21,7 @@ public class TecnicoService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto Não Encontrado! " + id));
     }
 
+    public List<Tecnico> findAll() {
+        return repository.findAll();
+    }
 }
