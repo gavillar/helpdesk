@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.helpdesk.domain.Chamado;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/chamados")
 public class ChamadoResource {
@@ -22,5 +25,14 @@ public class ChamadoResource {
         Chamado obj = service.findById(id);
         return ResponseEntity.ok().body(new ChamadoDTO(obj));
     }
+
+    @GetMapping
+    public ResponseEntity<List<ChamadoDTO>> findAll() {
+        List<Chamado> list = service.findAll();
+        List<ChamadoDTO> listDto = list.stream().map((obj) -> new ChamadoDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDto);
+    }
+
+
 
 }
