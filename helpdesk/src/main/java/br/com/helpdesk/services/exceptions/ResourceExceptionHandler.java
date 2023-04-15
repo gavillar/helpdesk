@@ -1,9 +1,10 @@
 package br.com.helpdesk.services.exceptions;
 
 
-import br.com.helpdesk.domain.enums.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -35,8 +36,22 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 
     }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StandardError> valdationErrors(MethodArgumentNotValidException ex,  HttpServletRequest request) {
+
+        ValidationError errors = new ValidationError(System.currentTimeMillis(),
+                HttpStatus.BAD_REQUEST.value(), "Validation Error", "Erro na validação dos Campos", request.getRequestURI());
+
+        for(FieldError x : ex.getBindingResult().getFieldErrors()) {
+            errors.addErrors(x.getField(), x.getDefaultMessage());
+        }
+
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+
+    }
 }
-
-
 
 
