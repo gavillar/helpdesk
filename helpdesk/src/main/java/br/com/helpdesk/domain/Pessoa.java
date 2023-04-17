@@ -30,7 +30,7 @@ public abstract class Pessoa implements Serializable {
     protected String email;
 
 
-    protected String senha;
+    protected String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PERFIS")
@@ -52,7 +52,7 @@ public abstract class Pessoa implements Serializable {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
-        this.senha = senha;
+        this.password = senha;
         addPerfil(Perfil.CLIENTE);
     }
 
@@ -97,13 +97,13 @@ public abstract class Pessoa implements Serializable {
     }
 
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 

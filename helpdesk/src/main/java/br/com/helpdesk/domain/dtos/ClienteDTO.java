@@ -23,7 +23,7 @@ public class ClienteDTO implements Serializable {
     @NotNull(message = "Campo EMAIL é requerido")
     protected String email;
     @NotNull(message = "Campo SENHA é requerido")
-    protected String senha;
+    protected String password;
     protected Set<Integer> perfis = new HashSet<>();
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dataCriacao = LocalDate.now();
@@ -39,7 +39,7 @@ public class ClienteDTO implements Serializable {
         this.nome = obj.getNome();
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
-        this.senha = obj.getSenha();
+        this.password = obj.getPassword();
         this.perfis = obj.getPerfis().stream().map(x -> x.getCode()).collect(Collectors.toSet());
         this.dataCriacao = obj.getDataCriacao();
         addPerfil(Perfil.CLIENTE);
@@ -77,12 +77,12 @@ public class ClienteDTO implements Serializable {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<Perfil> getPerfis() {
