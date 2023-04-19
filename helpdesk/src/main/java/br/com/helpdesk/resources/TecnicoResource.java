@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -48,6 +49,7 @@ public class TecnicoResource {
         List<TecnicoDTO> listDTO = list.stream().map(obj -> new TecnicoDTO()).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }
+
 
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {

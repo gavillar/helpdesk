@@ -1,6 +1,6 @@
 package br.com.helpdesk.security;
 
-import br.com.helpdesk.domain.dtos.CredentialDTO;
+import br.com.helpdesk.domain.dtos.CredenciaisDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +18,6 @@ import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    // É a principal interface de estratégia para autenticação, se o principle de entrada for valido e autenticado,
-    // o método authenticate retorna uma instância definido como verdadeiro.
-    // Caso não seja válido retornará nulo, e não poderá decidir se está ou não autenticado.
     private AuthenticationManager authenticationManager;
 
     // Nossa classe responsável por gerar o token
@@ -41,9 +38,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            CredentialDTO creds = new ObjectMapper().readValue(request.getInputStream(), CredentialDTO.class);
+            CredenciaisDTO creds = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDTO.class);
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>());
+                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             return authentication;
         } catch (Exception e) {
@@ -52,16 +49,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(
-            HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
-            throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+                                            Authentication authResult) {
 
-        String username = ((UserSS) authResult.getPrincipal()).getUsername();
-        String token = jwtUtil.generateToken(username);
+        var userSS = ((UserSS) authResult.getPrincipal());
+        String token = jwtUtil.generateToken(String.valueOf(userSS));
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, enctype, Location");
         response.setHeader("Authorization", "Bearer " + token);
-        response.setHeader("acces-control-expose-headers", "Authorization");
-    }
+ }
+
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
