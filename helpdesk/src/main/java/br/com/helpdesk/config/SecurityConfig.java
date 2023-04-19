@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
 
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("POST", "GETgi", "PUT", "DELETE", "OPTIONS"));
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
