@@ -23,16 +23,12 @@ public enum Perfil {
         if(cod == null) {
             return null;
         }
-
         for(Perfil x : Perfil.values()) {
             if(cod.equals(x.getCode())) {
                 return x;
             }
-
         }
-
         throw new IllegalArgumentException("Perfil Inválido");
-
     }
 
 }

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class UserSS implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    // Atributos do Usuário
     private Integer id;
     private String email;
     private String password;

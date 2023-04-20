@@ -1,6 +1,7 @@
 package br.com.helpdesk.config;
 
 import br.com.helpdesk.security.JWTAuthenticationFilter;
+import br.com.helpdesk.security.JWTAuthorizationFilter;
 import br.com.helpdesk.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
 
 @EnableWebSecurity
@@ -39,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
         http.cors().disable().csrf().disable();
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+       //http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService()));
         http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -49,14 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-
-        configuration.setAllowedMethods(Arrays.asList("POST", "GETgi", "PUT", "DELETE", "OPTIONS"));
-
+        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        // Definindo de qual fonte deve receber requisições.
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
