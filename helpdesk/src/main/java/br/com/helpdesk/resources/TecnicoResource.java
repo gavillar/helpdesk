@@ -43,13 +43,14 @@ public class TecnicoResource {
         return ResponseEntity.ok().body(new TecnicoDTO(obj));
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     private ResponseEntity<List<TecnicoDTO>> findAll() {
         List<Tecnico> list = service.findAll();
         List<TecnicoDTO> listDTO = list.stream().map(obj -> new TecnicoDTO()).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
