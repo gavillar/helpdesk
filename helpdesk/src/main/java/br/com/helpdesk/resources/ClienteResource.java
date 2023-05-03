@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 // como encontrar técnicos por ID ou atualizar suas informações.
 // A anotação @Autowired é usada para injetar uma instância de ClienteService na classe ClienteResource.
 
+@CrossOrigin(origins = "*")
 @RestController
-// Quando não conter nenhum parâmetro após o "/tecnicos", será chamado o findAll().
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
 
